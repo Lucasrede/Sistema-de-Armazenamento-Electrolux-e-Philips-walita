@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciador de Documentos</title>
+  <style>
+    /* Estilos CSS */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #007bff;
+    }
+
+    input[type="text"],
+    select {
+      width: calc(100% - 130px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    input[type="button"],
+    input[type="file"] {
+      padding: 10px 20px;
+      margin: 10px 5px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="button"]:hover,
+    input[type="file"]:hover {
+      background-color: #0056b3;
+    }
+
+    #results {
+      margin-top: 20px;
+    }
+
+    #results p {
+      margin: 5px 0;
+      padding: 5px;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Gerenciador de Documentos</h1>
+    <input type="text" id="searchInput" placeholder="Pesquisar documento...">
+    <input type="button" value="Pesquisar" onclick="searchDocument()">
+    <input type="file" id="fileUpload" accept="*/*">
+    <input type="button" value="Upload de Arquivo" onclick="document.getElementById('fileUpload').click();">
+    <select id="selectFolder">
+      <option value="Electrolux">Electrolux</option>
+      <option value="Philips Walita">Philips Walita</option>
+    </select>
+    <input type="text" id="descriptionInput" placeholder="Descrição do arquivo...">
+    <div id="results"></div>
+  </div>
+
+  <script>
+    // Array para armazenar os documentos
+    var documents = [
+      {folder: "Electrolux", name: "Electrolux Manual", description: "Manual de instruções para produtos Electrolux", file: "manual_electrolux.pdf"},
+      {folder: "Philips Walita", name: "Philips Walita Guia", description: "Guia do usuário para produtos Philips Walita", file: "guia_usuario_philips_walita.docx"}
+    ];
+
+    // Função para pesquisar documentos
+    function searchDocument() {
+      var searchTerm = document.getElementById("searchInput").value.toLowerCase();
+      var resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+
+      for (var i = 0; i < documents.length; i++) {
+        if (documents[i].name.toLowerCase().includes(searchTerm) || documents[i].description.toLowerCase().includes(searchTerm)) {
+          var resultItem = document.createElement("p");
+          resultItem.textContent = documents[i].name + " (" + documents[i].folder + "): " + documents[i].file;
+          resultsDiv.appendChild(resultItem);
+        }
+      }
+      if (resultsDiv.innerHTML === "") {
+        resultsDiv.textContent = "Nenhum documento encontrado.";
+      }
+    }
+
+    // Função para adicionar arquivo
+    document.getElementById('fileUpload').addEventListener('change', function () {
+      var file = this.files[0];
+      if (file) {
+        var folder = document.getElementById("selectFolder").value;
+        var description = document.getElementById("descriptionInput").value;
+        documents.push({folder: folder, name: file.name, description: description, file: file.name});
+        alert("Arquivo adicionado com sucesso!");
+      }
+    });
+  </script>
+</body>
+
+</html>
